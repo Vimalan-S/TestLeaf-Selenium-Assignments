@@ -78,5 +78,7 @@ public class DuplicateLead {
 		
 		// 20. Get the Title of Resulting Page using driver.getTitle()
 		System.out.println("\nTITLE OF THE PAGE AFTER RENAMING CREATE LEAD:\n" + driver.getTitle());
+		
+		//driver.close();
 	}
 }
