@@ -14,7 +14,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Nykaa {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 		// Disable Website notifications
 		ChromeOptions option = new ChromeOptions();
@@ -49,10 +49,8 @@ public class Nykaa {
 		
 //		6) Click Category and click Hair->Click haircare->Shampoo
 		driver.findElement(By.xpath("//span[text()='Category']")).click();
-		WebElement hair = driver.findElement(By.xpath("//span[text()='Hair']"));
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		wait.until(ExpectedConditions.visibilityOf(hair));
-		hair.click();
+		Thread.sleep(5000);
+		driver.findElement(By.xpath("//span[text()='Hair']")).click();
 		
 		WebElement hairCare = driver.findElement(By.xpath("//span[text()='Hair Care']"));
 		WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -69,10 +67,11 @@ public class Nykaa {
 		if(driver.findElement(By.xpath("(//span[@class='filter-value'])[2]")).getText().contains("Color Protection")) System.out.println("Color Protection filter successfully applied!");
 
 //		9) Click on L'Oreal Paris Colour Protect Shampoo 
-		driver.findElement(By.xpath("//div[@class='css-xrzmfa']")).click();
+		driver.executeScript("arguments[0].click()", driver.findElement(By.xpath("//div[@class='css-xrzmfa']")));
 		
 //		10) GO to the new window and select size as 175ml 
-		driver.findElement(By.xpath("//span[@class='active css-ieawrs']")).click();
+		Thread.sleep(7000);
+		driver.findElement(By.xpath("(//button[@type='button'])[5]")).click();
 		
 //		11) Print the MRP of the product 
 		System.out.println("MRP: " + driver.findElement(By.xpath("(//span[contains(@class,'css')])[8]")).getText());
@@ -84,12 +83,19 @@ public class Nykaa {
 		driver.findElement(By.id("view_bag_snackbar")).click();
 		
 //		14) Print the Grand Total amount
-//		15) Click Proceed
-//		16) Click on Continue as Guest
-//		17) Check if this grand total is the same in step 14
+		String grandTotal = driver.findElement(By.xpath("//div[contains(@class,'footer')]/div/div/div/span")).getText();
+		System.out.println("Grand Total: " + grandTotal);	
+		
+//		15) Click Proceed 
+		driver.findElement(By.xpath("//span[text()='Proceed']")).click();
+		
+//		16) Click on Continue as Guest 
+		driver.findElement(By.xpath("//button[text()='Continue as guest']")).click();
+		
+//		17) Check if this grand total is the same in step 14 
+		if(grandTotal.contains(driver.findElement(By.xpath("(//p[contains(@class,'css')])[10]")).getText())) System.out.println("Grand Total = " + grandTotal + " has been verified successfully");
+		
 //		18) Close all windows
-
-
+		driver.close();
 	}
-
 }
